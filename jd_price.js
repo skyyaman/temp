@@ -22,9 +22,9 @@ const $ = new Env('京东保价');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.msg('112234')
+console.log('112234')
 const jsdom = $.isNode() ? require('jsdom') : '';
-$.msg('abcdefg')
+console.log('abcdefg')
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message, allMessage = '';
 if ($.isNode()) {
