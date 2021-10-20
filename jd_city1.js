@@ -33,8 +33,12 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-//let inviteCodes = ['RtGKzeX2SQigedLMFddn1cwQcppajCK5h_oaMK09uxa1GVIdcQ@W9GzoJjSI0PrL-PvVLx_mjHeuJbxWx_0uScsLnKcvJ3BSyQ']
-let inviteCodes = ['HYbsyuWlQwqieID1V5h_mhaYKeFhc51WwWO-rBhHHSp8aA@X96sgb35EFSiMs_WF5h_mnS4zPi1obcNZbqgOrhH@X96sgb35EFTvMs-aW5h_j__hZnhBRbFhTda36tE@RtGKmoXOMkDWIv3NS6pbmm9AaFRcYKTzGSyi1bckJG7Qs6xk']
+//139 199 173 185
+//let inviteCodes = ['HYbsyuWlQwqieID1V5h_mhaYKeFhc51WwWO-rBhHHSp8aA@X96sgb35EFSiMs_WF5h_mnS4zPi1obcNZbqgOrhH@X96sgb35EFTvMs-aW5h_j__hZnhBRbFhTda36tE@RtGKmoXOMkDWIv3NS6pbmm9AaFRcYKTzGSyi1bckJG7Qs6xk']
+//lgz 137 170 4651
+let inviteCodes = ['RtGKm53gKFLLO_b6f4Z1mkhWH8IzqsDk54nPIYb8QciXaigi@RtGKz773QwLwL4qcEdY23zdAf0nyR11K0TQPu2fkKZwv7y49Vg@RtGKjZb5G1XjK_vnd7dBmlTYGi8i3qtqLTw0lgZ0v2z1FQtu@RtGKmq7CFnPrD-LnSIJ0msYXXxhi83nZAC-fbCQx8QIztBdr']
+//182 158 170 1789
+//let inviteCodes = ['RtGKvY7gJF79DfzldrZkmo6HGowmM8S01KoagwivWFT-0f7P@RtGKrajVAFHgA8nJb6dsmudiyorSSnaWoPZN2vqJZzQftC3W@RtGKoKrSPFnZKP_Ybo5ommrt_UzvG-G3Qbolem5HZKeYvWpH@RtGKrZDYG3PCAPDGUYpPmkMMeLOmiVwBGdJQ-yZDpYDKNdXp']
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
