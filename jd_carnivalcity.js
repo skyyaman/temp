@@ -81,9 +81,10 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
         continue
       }
       await JD818();
-       dohelp();
     }
   }
+  $.log('看看：',temp)
+  dohelp()
   if (allMessage) {
     //NODE端,默认每月一日运行进行推送通知一次
     if ($.isNode()) {
