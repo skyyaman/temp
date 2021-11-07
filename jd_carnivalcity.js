@@ -31,6 +31,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
+let temp=[]
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -48,14 +49,14 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  $.temp = [];
+ // $.temp = [];
   if (nowTime > new Date(activeEndTime).getTime()) {
     //活动结束后弹窗提醒
     $.msg($.name, '活动已结束', `该活动累计获得京豆：${$.jingBeanNum}个\n请删除此脚本\n咱江湖再见`);
     if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n咱江湖再见`);
     return
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 0; i <14; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -83,15 +84,43 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       await JD818();
     }
   }
-  $.log('看看：',temp)
-  dohelp()
-  if (allMessage) {
+  for (let i = 0; i <14; i++) {
+    if (cookiesArr[i]) {
+      cookie = cookiesArr[i];
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      $.index = i + 1;
+      $.isLogin = true;
+      $.nickName = '';
+      $.jingBeanNum = 0;//累计获得京豆
+      $.integralCount = 0;//累计获得积分
+      $.integer = 0;//当天获得积分
+      $.lasNum = 0;//当天参赛人数
+      $.num = 0;//当天排名
+      $.beans = 0;//本次运行获得京豆数量
+      $.blockAccount = false;//黑号
+      message = '';
+      await TotalBean();
+      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+      if (!$.isLogin) {
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        }
+        continue
+      }
+      await doHelp()
+    }
+  }
+  //await doHelp()
+  /*if (allMessage) {
     //NODE端,默认每月一日运行进行推送通知一次
     if ($.isNode()) {
       await notify.sendNotify($.name, allMessage, { url: "https://carnivalcity.m.jd.com/" });
       $.msg($.name, '', allMessage);
     }
   }
+  */
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -592,7 +621,7 @@ function saveJbean(date) {
 async function doHelp() {
   console.log(`\n开始助力好友`);
   //for (let item of $.newShareCodes) {
-    for (let item of $.temp) {
+    for (let item of temp) {
 if (!item) continue;
     const helpRes = await toHelp(item.trim());
     if (helpRes.data.status === 5) {
@@ -640,7 +669,7 @@ function getHelp() {
           if (data.code === 200) {
             console.log(`\n\n${$.name}互助码每天都变化,旧的不可继续使用`);
             $.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.shareId}\n\n`);
-            $.temp.push(data.data.shareId);
+            temp.push(data.data.shareId);
           } else {
             console.log(`获取邀请码失败：${JSON.stringify(data)}`);
             if (data.code === 1002) $.blockAccount = true;
