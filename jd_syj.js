@@ -8,17 +8,17 @@ Last Modified time: 2021-7-3 17:58:02
 ============Quantumultx===============
 [task_local]
 #赚京豆
-10 0,7,23 * * * jd_syj.js, tag=赚京豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
+10,40 0,1 * * * jd_syj.js, tag=赚京豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 0,7,23 * * *" script-path=jd_syj.js, tag=赚京豆
+cron "10,40 0,1 * * *" script-path=jd_syj.js, tag=赚京豆
 
 ===============Surge=================
-赚京豆 = type=cron,cronexp="10 0,7,23 * * *",wake-system=1,timeout=3600,script-path=jd_syj.js
+赚京豆 = type=cron,cronexp="10,40 0,1 * * *",wake-system=1,timeout=3600,script-path=jd_syj.js
 
 ============小火箭=========
-赚京豆 = type=cron,script-path=jd_syj.js, cronexpr="10 0,7,23 * * *", timeout=3600, enable=true
+赚京豆 = type=cron,script-path=jd_syj.js, cronexpr="10,40 0,1 * * *", timeout=3600, enable=true
  */
 const $ = new Env('赚京豆');
 
@@ -46,10 +46,10 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  $.authorTuanList =[];
-
+  $.authorTuanList = []
   const temp = []
-  $.authorTuanList = [...$.authorTuanList,...temp]
+  //$.authorTuanList = [...$.authorTuanList,...temp]
+ $.authorTuanList = []
   // await getRandomCode();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -605,7 +605,7 @@ function helpFriendTuan(body) {
               else if (data.resultCode === '2400205') console.log('助力结果：团已满\n')
               else if (data.resultCode === '2400203') {console.log('助力结果：助力次数已耗尽\n');$.canHelp = false}
               else if (data.resultCode === '9000000') {console.log('助力结果：活动火爆，跳出\n');$.canHelp = false}
-              else console.log(`助力结果：未知错误\n${JSON.stringify(data)}\n\n`)
+              else {console.log(`助力结果：未知错误\n${JSON.stringify(data)}\n\n`);$.canHelp = false}
             }
           }
         }
@@ -730,7 +730,16 @@ async function getRandomCode() {
   await $.http.get({url: `http://go.chiang.fun/read/zuan/${randomCount}`, timeout: 10000}).then(async (resp) => {
     if (resp.statusCode === 200) {
       try {
-        
+        let { body } = resp;
+        body = JSON.parse(body);
+        if (body && body['code'] === 200) {
+          console.log(`随机取【赚京豆-瓜分京豆】${randomCount}个邀请码成功\n`);
+          $.body = body['data'];
+          $.body1 = [];
+          $.body.map(item => {
+            $.body1.push(JSON.parse(item));
+          })
+        }
       } catch (e) {
         console.log(`随机取【赚京豆-瓜分京豆】${randomCount}个邀请码异常:${e}`);
       }
