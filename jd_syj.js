@@ -51,7 +51,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   //$.authorTuanList = [...$.authorTuanList,...temp]
  $.authorTuanList = []
   // await getRandomCode();
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 0; i < cookiesArr.length-1; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -73,7 +73,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     }
   }
   console.log(`\n\n内部互助 【赚京豆(微信小程序)-瓜分京豆】活动(优先内部账号互助(需内部cookie数量大于${$.assistNum || 4}个)，如有剩余助力次数则给作者和随机团助力)\n`)
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 0; i < cookiesArr.length-1; i++) {
     $.canHelp = true
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -90,7 +90,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       if ($.canHelp) {
         $.authorTuanList = [...$.authorTuanList, ...($.body1 || [])];
         if ($.authorTuanList.length) console.log(`开始账号内部互助 赚京豆-瓜分京豆 活动，如有剩余则给作者和随机团助力`)
-        for (let j = 0; j < $.authorTuanList.length; ++j) {
+        for (let j = 0; j < $.authorTuanList.length-1; ++j) {
           console.log(`账号 ${$.UserName} 开始给作者和随机团 ${$.authorTuanList[j]['assistedPinEncrypted']}助力`)
           await helpFriendTuan($.authorTuanList[j])
           if(!$.canHelp) break
