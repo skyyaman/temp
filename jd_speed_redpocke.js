@@ -29,7 +29,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '', message;
-const linkIds = ["9wdf1YTT2L59Vr-meKskLA", "7ya6o83WSbNhrbYJqsMfFA"];
+const linkIds = ["7ya6o83WSbNhrbYJqsMfFA"];
 const signLinkId = '9WA12jYGulArzWS7vcrwhw';
 let linkId
 
@@ -68,7 +68,7 @@ if ($.isNode()) {
         continue
       }
       for (const id of linkIds) {
-        //linkId = id
+        linkId = id
         await jsRedPacket()
       }
     }
@@ -83,8 +83,8 @@ if ($.isNode()) {
 
 async function jsRedPacket() {
   try {
-    // await invite();
-    await sign();//极速版签到提现
+    //await invite2();
+//     await sign();//极速版签到提现
     await reward_query();
     for (let i = 0; i < 5; ++i) {
       await redPacket();//开红包
@@ -96,6 +96,34 @@ async function jsRedPacket() {
   } catch (e) {
     $.logErr(e)
   }
+}
+
+function invite2() {
+  let inviterId = [
+    "/eNHdfn6fP+TFwVda3ipjWwvTFqeKBZaRG38adWABKk=",
+    "Sev6JWjut6GyaEHJIWpSQQ=="
+  ][Math.floor((Math.random() * 2))]
+  let headers = {
+    'Host': 'api.m.jd.com',
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/x-www-form-urlencoded',
+    'origin': 'https://assignment.jd.com',
+    'accept-language': 'zh-cn',
+    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+    'referer': `https://assignment.jd.com/?inviterId=${encodeURIComponent(inviterId)}`,
+    'Cookie': cookie
+  }
+
+  let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${Date.now()}`;
+
+  var options = {
+    url: 'https://api.m.jd.com/',
+    headers: headers,
+    body: dataString
+  }
+  $.post(options, (err, resp, data) => {
+    // console.log(data)
+  })
 }
 
 
@@ -155,8 +183,7 @@ async function sign() {
 function reward_query() {
   return new Promise(resolve => {
     $.get(taskGetUrl("spring_reward_query", {
-      //"inviter": "7057MkYN_M4C3K_QNqU2YQ",
-      "inviter": "XXXXXXXXXXXXXXXXXXX",
+      "inviter": "7057MkYN_M4C3K_QNqU2YQ",
       linkId
     }), async (err, resp, data) => {
       try {
@@ -183,8 +210,7 @@ function reward_query() {
 }
 async function redPacket() {
   return new Promise(resolve => {
-    $.get(taskGetUrl("spring_reward_receive",{"inviter": "XXXXXXXXXXXXXXXX",linkId}),
-    //$.get(taskGetUrl("spring_reward_receive",{"inviter": "7057MkYN_M4C3K_QNqU2YQ",linkId}),
+    $.get(taskGetUrl("spring_reward_receive",{"inviter": "7057MkYN_M4C3K_QNqU2YQ",linkId}),
         async (err, resp, data) => {
           try {
             if (err) {
@@ -216,8 +242,7 @@ async function redPacket() {
 
 function getPacketList() {
   return new Promise(resolve => {
-    $.get(taskGetUrl("spring_reward_list",{"pageNum":1,"pageSize":100,linkId,"inviter":"XXXXXXXXXXXXXXXXX"}), async (err, resp, data) => {
-    //$.get(taskGetUrl("spring_reward_list",{"pageNum":1,"pageSize":100,linkId,"inviter":"7057MkYN_M4C3K_QNqU2YQ"}), async (err, resp, data) => {   
+    $.get(taskGetUrl("spring_reward_list",{"pageNum":1,"pageSize":100,linkId,"inviter":"7057MkYN_M4C3K_QNqU2YQ"}), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
