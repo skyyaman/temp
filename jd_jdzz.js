@@ -7,7 +7,7 @@
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
-# 京东赚赚
+# 京东赚
 10 0 * * * jd_jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
 
 ================Loon==============
@@ -136,11 +136,11 @@ function getUserInfo() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            // if (data.data.shareTaskRes) {
-            //   console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${data.data.shareTaskRes.itemId}\n`);
-            // } else {
-            //   console.log(`\n\n已满5人助力或助力功能已下线,故暂时无${$.name}好友助力码\n\n`)
-            // }
+             if (data.data.shareTaskRes) {
+               console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${data.data.shareTaskRes.itemId}\n`);
+             } else {
+               console.log(`\n\n已满5人助力或助力功能已下线,故暂时无${$.name}好友助力码\n\n`)
+             }
           }
         }
       } catch (e) {
@@ -195,6 +195,7 @@ function doTask(body, func = "doInteractTask") {
           if (safeGet(data)) {
             data = JSON.parse(data);
             // console.log(data)
+            console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${data.data.shareTaskRes.itemId}
             if (func === "doInteractTask") {
               if (data.subCode === "S000") {
                 console.log(`任务完成，获得 ${data.data.taskDetailResList[0].incomeAmountConf} 金币，${data.data.taskDetailResList[0].beanNum} 京豆`)
@@ -233,7 +234,7 @@ function readShareCode() {
         } else {
           if (data) {
             console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
-            data = JSON.parse(data);
+            //data = JSON.parse(data);
           }
         }
       } catch (e) {
