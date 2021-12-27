@@ -72,8 +72,10 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
-  let res = []
-  let res2 =[]
+  let res =[]
+ 
+  let res2 = []
+ 
   $.shareCode = []
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
