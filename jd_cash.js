@@ -48,7 +48,6 @@ let allMessage = '';
   }
   await requireConfig()
   $.authorCode =[]
-
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
