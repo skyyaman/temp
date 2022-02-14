@@ -343,26 +343,6 @@ function join(venderId) {
     $.shopactivityId = ''
     await $.wait(1000)
     await getshopactivityId(venderId)
-    $.get(ruhui(`${venderId}`), async (err, resp, data) => {
-      try {
-        // console.log(data)
-        data = JSON.parse(data);
-        if(data.success == true){
-          $.log(data.message)
-          if(data.result && data.result.giftInfo){
-            for(let i of data.result.giftInfo.giftList){
-              console.log(`入会获得:${i.discountString}${i.prizeName}${i.secondLineDesc}`)
-            }
-          }
-        }else if(data.success == false){
-          $.log(data.message)
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
   })
 }
 function ruhui111(functionId) {
