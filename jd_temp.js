@@ -102,7 +102,7 @@ async function run() {
             if($.oneTask.cardName.indexOf('马克华') > -1) continue
             console.log(`${$.oneTask.cardName} ${0 == $.oneTask.result ? "开卡得" + $.oneTask.rewardQuantity + "京豆" : 1 == $.oneTask.result ? "领取" + $.oneTask.rewardQuantity + "京豆" : 3 == $.oneTask.result ? "其他渠道入会" : "已入会"}`)
             if($.oneTask.result == 0) await statistic(`{"activityType":"module_task","groupType":7,"configCode":"${item.configCode}","itemId":${$.oneTask.cardId}}`)
-            if($.oneTask.result == 0) await join($.oneTask.venderId)
+            //if($.oneTask.result == 0) await join($.oneTask.venderId)
             await $.wait(parseInt(Math.random() * 1000 + 500, 10))
             if($.oneTask.result == 1 || $.oneTask.result == 0) await getReward(`{"configCode":"${item.configCode}","groupType":7,"itemId":${$.oneTask.cardId},"eid":"${$.eid}","fp":"${$.fp}"}`)
           }else if($.task.showOrder == 2){
@@ -382,9 +382,7 @@ function ruhui111(functionId) {
     }
   }
 }
-function ruhui(functionId) {
-    return
-}
+
 function getshopactivityId(venderId) {
   return new Promise(resolve => {
     $.get(shopactivityId(`${venderId}`), async (err, resp, data) => {
