@@ -74,7 +74,7 @@ async function jdmodule() {
     await getinfo();
     console.log("开始抽奖");
     for (let x = 0; x < $.chanceLeft; x++) {
-       // await join();
+        await join();
         await $.wait(1500)
     }
 }
