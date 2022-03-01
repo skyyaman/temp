@@ -129,25 +129,6 @@ async function run() {
     await takePostRequest('checkOpenCard');
     // console.log($.actorUuid)
     // return
-    if($.allOpenCard == false){
-      console.log('开卡任务')
-      for(o of $.openList){
-        $.openCard = false
-        if(o.status == 0){
-          flag = true
-          $.joinVenderId = o.value
-          //await joinShop()
-		  
-          await $.wait(parseInt(Math.random() * 2000 + 3000, 10))
-          await takePostRequest('drawContent');
-          await takePostRequest('checkOpenCard');
-          await $.wait(parseInt(Math.random() * 3000 + 2000, 10))
-        }
-      }
-      await takePostRequest('activityContent');
-    }else{
-      console.log('已全部开卡')
-    }
     $.log("关注: " + $.followShop)
     if(!$.followShop && !$.outFlag){
       flag = true
