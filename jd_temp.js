@@ -89,8 +89,10 @@ async function getInfo(url) {
     }, async (err, resp, data) => {
       try {
         
-        $.encryptProjectId = resp.match(/"encryptProjectId\\":\\"(.*?)\\"/)[1];
-        $.encryptAssignmentId = resp.match(/"encryptAssignmentId\\":\\"(.*?)\\"/)[1];
+        $.encryptProjectId = resp.body.match(/"encryptProjectId\\":\\"(.*?)\\"/)[1];
+        $.encryptAssignmentId = resp.body.match(/"encryptAssignmentId\\":\\"(.*?)\\"/)[1];
+        console.log($.encryptProjectId)
+        console.log($.encryptAssignmentId)
         await doInteractiveAssignment($.encryptProjectId, $.encryptAssignmentId);
         resolve();
       } catch (e) {
