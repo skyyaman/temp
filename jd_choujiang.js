@@ -139,6 +139,8 @@ function getinfo() {
                     console.log(`${$.name} getinfo请求失败，请检查网路重试`)
                 } else {
                     data = JSON.parse(data);
+                    console.log(data)
+                    return
                     $.chanceLeft = data.data.chanceLeft;
                     if (data.success == true) {
                         $.taskinfo = data.data.taskConfig
