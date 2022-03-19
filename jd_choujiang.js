@@ -7,7 +7,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
-$.configCode = "";
+configCode = "";
 if (process.env.configCode) configCode = process.env.configCode
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
@@ -120,7 +120,7 @@ async function run() {
 function getinfo() {
     return new Promise(resolve => {
         $.get({
-            url: `https://jdjoy.jd.com/module/task/draw/get?configCode=${$.configCode}&unionCardCode=`,
+            url: `https://jdjoy.jd.com/module/task/draw/get?configCode=${configCode}&unionCardCode=`,
             headers: {
                 'Host': 'jdjoy.jd.com',
                 'accept': '*/*',
@@ -161,7 +161,7 @@ function getinfo() {
 function join() {
     return new Promise(async (resolve) => {
         $.get({
-            url: `https://jdjoy.jd.com/module/task/draw/join?configCode=${$.configCode}&fp=${randomWord(false, 32, 32)}&eid=`,
+            url: `https://jdjoy.jd.com/module/task/draw/join?configCode=${configCode}&fp=${randomWord(false, 32, 32)}&eid=`,
             headers: {
                 'Host': 'jdjoy.jd.com',
                 'accept': '*/*',
@@ -199,7 +199,7 @@ function join() {
 //做任务
 function doTask(taskType, itemId, taskid) {
     return new Promise(resolve => {
-        let options = taskPostUrl('doTask', `{"configCode":"${$.configCode}","taskType":${taskType},"itemId":"${itemId}","taskId":${taskid}}`)
+        let options = taskPostUrl('doTask', `{"configCode":"${configCode}","taskType":${taskType},"itemId":"${itemId}","taskId":${taskid}}`)
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
@@ -226,7 +226,7 @@ function doTask(taskType, itemId, taskid) {
 //领取任务奖励
 function getReward(taskType, itemId, taskid) {
     return new Promise(resolve => {
-        let options = taskPostUrl('getReward', `{"configCode":"${$.configCode}","taskType":${taskType},"itemId":"${itemId}","taskId":${taskid}}`)
+        let options = taskPostUrl('getReward', `{"configCode":"${configCode}","taskType":${taskType},"itemId":"${itemId}","taskId":${taskid}}`)
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
