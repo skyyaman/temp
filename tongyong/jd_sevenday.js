@@ -12,13 +12,17 @@ const $ = new Env('超级无线店铺签到');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
-// https://lzkj-isv.isvjcloud.com/sign/sevenDay/signActivity?activityId=
-let activityIdList = []
-// https://lzkj-isv.isvjcloud.com/sign/signActivity2?activityId=
-let activityIdList2 = []
-let activityIdList3 = []
-let lz_cookie = {}
 
+//https://lzkj-isv.isvjcloud.com/sign/sevenDay/signActivity?activityId=
+let activityIdList = []
+
+//https://lzkj-isv.isvjcloud.com/sign/signActivity2?activityId=
+let activityIdList2 = []
+
+//https://cjhy-isv.isvjcloud.com/sign/signActivity?activityId=
+let activityIdList3 = []
+
+let lz_cookie = {}
 if (process.env.SEVENDAY_LIST && process.env.SEVENDAY_LIST != "") {
     activityIdList = process.env.SEVENDAY_LIST.split(',');
 }
