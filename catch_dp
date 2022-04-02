@@ -4,8 +4,8 @@ import json
 import openpyxl
 import time,random
 import sys,os
-startshop=106786 #25/3中午运行到这里了
-visitkey='45618802361819400'
+startshop=1000072566 #25/3中午运行到这里了  1000072463 
+visitkey='45618802361819442'
 run_times=10000
 modikey=visitkey
 ns = [[0 for x in range(3)] for y in range(1)]
@@ -16,8 +16,13 @@ tellme=0
 blacktimes=0
 startTime = time.time()
 
-def alter(file,old_str,new_str):
+def finalTime(ft):  #记录截止时间
+    now=int(re.match('[0-9]{10}',str(ft)).group(0))
+    timeArray = time.localtime(now)
+    finnalTime = time.strftime("%m-%d-%H:%M:%S", timeArray)
+    return finnalTime
 
+def alter(file,old_str,new_str):  #替换文件字符
     file_data = ""
     replaced=0
     with open(file, "r", encoding="utf-8") as f:
@@ -28,6 +33,7 @@ def alter(file,old_str,new_str):
             file_data += line
     with open(file,"w",encoding="utf-8") as f:
         f.write(file_data)
+
 for i in range(startshop,startshop+run_times):
     try:
         runtimes+=1
@@ -59,6 +65,7 @@ for i in range(startshop,startshop+run_times):
             visitkey=str(int(visitkey)+1)
             blacktimes +=1
             if blacktimes==30 : break
+            i=i-1
             continue
         if tellme % 20==0 :         #20次休息2-5秒
             print('休息几秒',jsonD[:40])
@@ -79,8 +86,6 @@ for i in range(startshop,startshop+run_times):
 
         resp2 = requests.get(url2,headers=header2,timeout=(30.05, 60.06))
         json2 = json.dumps(resp2.text)
-        
-
         tokenid=re.search("token\%3D[a-zA-Z0-9]+",json2, re.M|re.I)
         if json2.find('Authorization Required')!=-1:
             print('又黑了，偿试visitkey='+str(int(visitkey)+1)+'看看')
@@ -108,11 +113,8 @@ for i in range(startshop,startshop+run_times):
 
         resp3 = requests.get(url3,headers=header3,timeout=(30.05, 60.06))
         json3 = json.dumps(resp3.text)
-        #Dtype=json.loads(json3)
         res='(?<=\().*(?=\))'
         jsonE=re.search(res,json3,re.M|re.I).group(0).replace('\\','')
-        #jsonE=re.search(res,json3,re.M|re.I).group(0)
-        #print(jsonE)
         infor=''
         rulelist=[1,1]
         rulelist=json.loads(jsonE).get('data').get('continuePrizeRuleList') #奖励规则 是列表对象
@@ -125,11 +127,12 @@ for i in range(startshop,startshop+run_times):
                     infor=infor+f'每{days}天奖京豆:{prizelist[k].get("discount")}个,'
                 if (prizelist[k].get('type')==14):
                     infor=infor+f'每{days}天奖红包:{prizelist[k].get("discount")}分。。。,'
-                #print (infor)
+                
         #运行完没有期望奖励，则不保存，继续下个店铺
         if(infor==''):
             continue
-        
+        else:
+            infor=infor+';结束时间：'+finalTime(json.loads(jsonE).get('data').get('endTime'))
         ns[j]=[shopaddr,tokenid,infor,time.strftime('%m-%d-%H:%M:%S', time.localtime())]
         successTimes+=1
         j=j+1
