@@ -6,9 +6,9 @@ import openpyxl
 import time,random
 import sys,os
 
-startshop=1000005193 #25/3中午运行到这里了 1000094421  1000128488
-visitkey='10353796670247017'
-run_times=1
+startshop=1000137698 #25/3中午运行到这里了 1000094421  1000128488
+visitkey='11353796670241060'
+run_times=20000
 modikey=visitkey
 ns = [[0 for x in range(3)] for y in range(1)]
 j=0
@@ -29,7 +29,7 @@ def create_xls(filename):
         wb2 = openpyxl.load_workbook(filename, keep_vba=True)
         wb2.save(filename)
 def write_txt(filename,txt):
-    with open(filename,"w",encoding='utf-8') as f:
+    with open(filename,"a") as f:
         f.write(txt)
 def finalTime(ft):  #记录截止时间
     now=int(re.match('[0-9]{10}',str(ft)).group(0))
@@ -78,11 +78,12 @@ def findRuleList(string,listname):
 write_txt('log/'+str(time.strftime('%m-%d', time.localtime()))+'.txt',str(time.strftime('%H:%M:%S', time.localtime()))+':开始'+str(startshop)+'！\n')
 
 for i in range(startshop,startshop+run_times):
+    #time.sleep(0)
     try:
         runtimes+=1
         tellme=tellme+1
         url = "https://shop.m.jd.com/?shopId=" + str(i)
-        print (f'正在检查{i}店铺中。')
+        
         # 模仿浏览器的headers
         headers = {
             "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1",
@@ -96,11 +97,12 @@ for i in range(startshop,startshop+run_times):
         jsonD = json.dumps(resp.text)
         #print (jsonD)
         vid='\<title\>([\S\s]*?)\<\/title\>'
-        #print (re.search(vid,jsonD, re.M|re.I))
         vid=r"\d+"
         a=re.search(vid,jsonD, re.M|re.I)
         b=re.search('(?<=title\>).*(?=</title)',jsonD, re.M|re.I)
-        
+        dptitle=b[0].replace(' ','').encode('latin-1').decode('unicode_escape').replace('\r\n','')
+        if dptitle=='京东购物' or dptitle=='店铺关店页':continue
+        if b[0]!=-1:print(f'{time.strftime("%m-%d-%H:%M:%S", time.localtime())}:正在检查{dptitle}{i}中..')
         if jsonD.find('Authorization Required')!=-1:
             print('黑了，偿试visitkey='+str(int(visitkey)+1)+'看看')
             visitkey=str(int(visitkey)+1)
@@ -137,7 +139,7 @@ for i in range(startshop,startshop+run_times):
         if tokenid==None:
             if tellme % 1000==0 :
                 logging=str(time.strftime('%H:%M:%S', time.localtime()))+':第'+str(i)+'个店铺,还是没有\n'
-                write_txt('/jd/scripts/log/'+str(time.strftime('%m-%d', time.localtime()))+'.txt',logging)
+                write_txt('log/'+str(time.strftime('%m-%d', time.localtime()))+'.txt',logging)
             continue
         tokenid=tokenid.group(0)[-32:]
         print(f'***************发现有，检查数据中{i}****************')
