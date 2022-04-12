@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1EFZWxKqP','1EFRQwA','1FFVQyqw','1E1xZy6s'];
-let appNameArr = ['RedmiK50新品来袭','疯狂砸金蛋','1111点心动','PLUS生活特权'];
+let appIdArr = ['1FFVQyqw','1EFRWxKuG', '1E1xZy6s'];
+let appNameArr = ['1111点心动','许愿抽好礼', 'PLUS生活特权'];
 let appId, appName;
 $.shareCode = [];
 if ($.isNode()) {
@@ -72,11 +72,11 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
-  let res =[]
+  let res = []
 
-  let res2 =[]]
-
-  $.shareCode = []
+  let res2 = []
+ 
+  $.shareCode = [...$.shareCode, ...(res || []), ...(res2 || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
